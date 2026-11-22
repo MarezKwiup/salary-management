@@ -34,7 +34,7 @@ Indexes on `country` and `(country, job_title)` to support filtering and insight
 - **Currency is derived from country and never mixed.** Every insight is scoped to a single country and reported in that country's currency. Averaging INR with USD would produce a meaningless number.
 - **Salary stored as an integer**, never a floating-point value, to avoid rounding errors.
 - **Server-side pagination, filtering and aggregation.** The browser never loads all 10,000 rows. The database does the aggregation work.
-- **SQLite** as the database: 10,000 rows is small, it needs no extra infrastructure, and tests run on an in-memory database, so they are fast and deterministic. Postgres becomes the right choice once there are concurrent writers or multiple app instances.
+- **PostgresSQL** as the database: it is production-grade, supports aggregate functions like percentile_cont for medians directly in SQL, and handles concurrent access if more HR users are added later. Business logic is unit-tested against an in-memory fake repository for speed; SQL queries are integration-tested against a real Postgres instance in Docker.
 
 ## 6. Deliberately out of scope (and why)
 | Left out | Reason |
