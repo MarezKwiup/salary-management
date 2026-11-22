@@ -3,8 +3,8 @@ import process from "node:process";
 import { z } from "zod";
 
 const envSchema = z.object({
-    DATABASE_URL: z.string().url(),
-    TEST_DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.url(),
+    TEST_DATABASE_URL: z.url().optional(),
     PORT: z.coerce.number().int().positive().default(4000),
 });
 
