@@ -32,12 +32,13 @@ afterAll(async () => {
 });
 
 describe("PgEmployeeRepository.create", () => {
-    it("persits an employee and returns stored row", async () => {
+    it("persists an employee and returns stored row", async () => {
         const emp = await repo.create(newEmployee);
 
         expect(emp.id).toBe(1);
         expect(emp.createdAt).toBeInstanceOf(Date);
         expect(emp.hireDate).toBe("2024-01-01");
+        expect(emp).toMatchObject(newEmployee);
     });
 
     it("database rejects salary of 0", async () => {

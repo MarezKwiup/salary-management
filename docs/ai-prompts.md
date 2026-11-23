@@ -24,3 +24,10 @@
 **Accepted:** Separate Dockerised test DB (tmpfs), migrations applied in test setup, TRUNCATE ... RESTART IDENTITY before each test.
 **Changed/Rejected:** Disabled Vitest file parallelism instead of creating a database per test file.
 **Why:** Parallel files sharing one DB cause flaky tests; a DB per file adds complexity that isn't worth it at this size. Resetting identities keeps ids deterministic.
+
+## 4. Create employee — layering & validation
+**Tool:** Claude
+**Asked:** Design the create-employee feature test-first across validation, service, repository and route.
+**Accepted:** Feature folder; service depends on a repository interface (fake in unit tests, Postgres in integration tests); currency derived server-side; ISO country codes; Zod at the API boundary plus a DB CHECK constraint.
+**Changed/Rejected:** Caught a test importing beforeEach from node:test instead of vitest, so the DB reset never ran — the test passed only because the table was empty. Verified by making it fail with seeded data.
+**Why:** The interface keeps business logic testable without a database; ISO codes prevent the "USA vs United States" inconsistency that plagues spreadsheets.
