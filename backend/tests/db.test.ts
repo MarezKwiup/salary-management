@@ -1,7 +1,6 @@
 import { setupTestDb, resetDb } from "./helpers/testDb.js";
 import type { Db } from "../src/db/client.js";
-import { afterAll, beforeAll, expect } from "vitest";
-import { beforeEach } from "node:test";
+import { afterAll, beforeAll, expect, beforeEach } from "vitest";
 import { test } from "vitest";
 import { sql } from "drizzle-orm";
 
