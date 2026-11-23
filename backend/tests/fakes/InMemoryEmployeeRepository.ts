@@ -8,6 +8,6 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
         const now = new Date();
         const created = { ...data, id: this.nextId++, createdAt: now, updatedAt: now };
         this.rows.push(created);
-        return this.rows[this.rows.length - 1];
+        return created;
     }
 }

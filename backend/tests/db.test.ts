@@ -23,5 +23,5 @@ afterAll(async () => {
 
 test("employees table exists and starts empty", async () => {
     const res = await db.execute(sql`SELECT count(*)::int AS count from employees`);
-    expect(res.rows[0].count).toEqual(0);
+    expect(res.rows[0]?.count).toEqual(0);
 })
