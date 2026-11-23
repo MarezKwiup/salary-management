@@ -28,7 +28,7 @@ Key questions the tool must answer quickly:
 
 ## 4. Data model
 `employees`: `id`, `full_name`, `job_title`, `department`, `country`, `currency`, `salary` (annual, integer, in the local currency), `hire_date`, `created_at`, `updated_at`.
-Indexes on `country` and `(country, job_title)` to support filtering and insights.
+Index on `(country, job_title)` to support filtering and insights.
 
 ## 5. Key design decisions
 - **Currency is derived from country and never mixed.** Every insight is scoped to a single country and reported in that country's currency. Averaging INR with USD would produce a meaningless number.
