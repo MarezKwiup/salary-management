@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createEmployeeSchema } from './employee.validation';
+import { createEmployeeSchema, employeeIdSchema, updateEmployeeSchema } from './employee.validation';
 import type { EmployeeService } from './employee.service';
 
 export function employeeRouter(service: EmployeeService): Router {
@@ -9,6 +9,23 @@ export function employeeRouter(service: EmployeeService): Router {
         const body = createEmployeeSchema.parse(req.body);
         const employee = await service.create(body);
         res.status(201).json(employee);
+    });
+
+    router.get('/:id', async (req, res) => {
+        const { id } = employeeIdSchema.parse(req.params);
+        res.json(await service.getById(id));
+    });
+
+    router.patch('/:id', async (req, res) => {
+        const { id } = employeeIdSchema.parse(req.params);
+        const changes = updateEmployeeSchema.parse(req.body);
+        res.json(await service.update(id, changes));
+    });
+
+    router.delete('/:id', async (req, res) => {
+        const { id } = employeeIdSchema.parse(req.params);
+        await service.delete(id);
+        res.status(204).send();
     });
 
     return router;

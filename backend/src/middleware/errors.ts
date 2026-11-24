@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import { ZodError } from 'zod';
+import { NotFoundError } from '../errors';
 
 export const notFound: RequestHandler = (req, res) => {
     res.status(404).json({
@@ -17,6 +18,11 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
             issues: err.issues.map((i) => ({ path: i.path.join('.'), message: i.message })),
         });
 
+        return;
+    }
+
+    if (err instanceof NotFoundError) {
+        res.status(404).json({ error: 'NOT_FOUND', message: err.message });
         return;
     }
 

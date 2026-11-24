@@ -1,4 +1,4 @@
-import type { Employee, EmployeeRepository, NewEmployee } from '../../src/employees/employee.types';
+import type { Employee, EmployeeChanges, EmployeeRepository, NewEmployee } from '../../src/employees/employee.types';
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
     private rows: Employee[] = [];
@@ -9,5 +9,25 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
         const created = { ...data, id: this.nextId++, createdAt: now, updatedAt: now };
         this.rows.push(created);
         return created;
+    }
+
+    async findById(id: number): Promise<Employee | null> {
+        const row = this.rows.findIndex((row) => row,id === id);
+        if (row === -1) return null;
+        return this.rows[row];
+    }
+
+    async update(id: number, changes: EmployeeChanges): Promise<Employee | null> {
+        const row = this.rows.findIndex((row) => row,id === id);
+        if (row === -1) return null;
+        this.rows[row] = { ...this.rows[row], ...changes };
+        return this.rows[row];
+    }
+
+    async delete(id: number): Promise<boolean> {
+        const row = this.rows.findIndex((row) => row,id === id);
+        if (row === -1) return false;
+        this.rows.splice(row, 1);
+        return true;
     }
 }

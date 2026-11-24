@@ -60,3 +60,64 @@ describe('POST /employees', () => {
         expect(res.body.error).toBe('PAYLOAD_TOO_LARGE');
     })
 });
+
+async function createViaApi() {
+    const res = await request(app).post('/employees').send(validBody);
+    return res.body as { id: number };
+}
+
+describe('DELETE /employees/:id', () => {
+    it('204 with no body', async () => {
+        const { id } = await createViaApi();
+        const res = await request(app).delete(`/employees/${id}`);
+
+        expect(res.status).toBe(204);
+        expect(res.text).toBe('');
+    })
+
+    it('404 for missing id', async () => {
+        const res = await request(app).delete(`/employees`);
+
+        expect(res.status).toBe(404);
+        expect(JSON.parse(res.text).error).toBe('NOT_FOUND');
+    })
+});
+
+describe('PATCH /employees/:id', () => {
+    it('200 with valid update body', async () => {
+        const { id } = await createViaApi();
+        const update = { country: 'DE' };
+        const res = await request(app).patch(`/employees/${id}`).send(update);
+
+        expect(res.status).toBe(200);
+        expect(res.body.country).toBe('DE');
+        expect(res.body.currency).toBe('EUR');
+    });
+
+    it('404 for missing id', async () => {
+        const res = await request(app).patch(`/employees`).send({ country: 'DE' });
+
+        expect(res.status).toBe(404);
+        expect(JSON.parse(res.text).error).toBe('NOT_FOUND');
+    });
+});
+
+describe('GET /employees/:id', () => {
+    it('200 with employee with valid id', async () => {
+        const { id } = await createViaApi();
+        const res = await request(app).get(`/employees/${id}`);
+
+        expect(res.status).toBe(200);
+        expect(res.body.fullName).toBe(validBody.fullName);
+        expect(res.body.department).toBe(validBody.department);
+        expect(res.body.salary).toBe(validBody.salary);
+        expect(res.body.jobTitle).toBe(validBody.jobTitle);
+    });
+
+    it('404 for missing id', async () => {
+        const res = await request(app).get(`/employees`);
+
+        expect(res.status).toBe(404);
+        expect(JSON.parse(res.text).error).toBe('NOT_FOUND');
+    });
+});

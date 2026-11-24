@@ -22,3 +22,13 @@ export const createEmployeeSchema = z.object({
 });
 
 export type CreateEmployeeInput = z.infer<typeof createEmployeeSchema>;
+
+export const updateEmployeeSchema = createEmployeeSchema
+    .partial()
+    .refine((d) => Object.keys(d).length > 0, { message: 'At least one field is required' });
+
+export type UpdateEmployeeInput = z.infer<typeof updateEmployeeSchema>;
+
+export const employeeIdSchema = z.object({
+    id: z.coerce.number().int().positive(),
+});

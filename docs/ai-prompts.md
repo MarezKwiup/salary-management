@@ -31,3 +31,10 @@
 **Accepted:** Feature folder; service depends on a repository interface (fake in unit tests, Postgres in integration tests); currency derived server-side; ISO country codes; Zod at the API boundary plus a DB CHECK constraint.
 **Changed/Rejected:** Caught a test importing beforeEach from node:test instead of vitest, so the DB reset never ran — the test passed only because the table was empty. Verified by making it fail with seeded data.
 **Why:** The interface keeps business logic testable without a database; ISO codes prevent the "USA vs United States" inconsistency that plagues spreadsheets.
+
+## 5. Get / update / delete employee
+**Tool:** Claude
+**Asked:** Design read/update/delete by id, explained in SQL first.
+**Accepted:** PATCH with partial validation; currency re-derived when country changes; NotFoundError mapped to 404 in one place; RETURNING used to detect missing rows in one query; updated_at set with now() in the UPDATE.
+**Changed/Rejected:** Considered a Postgres trigger for updated_at; chose an explicit SET in the query for visibility and testability. Hard delete for now; soft delete noted as out of scope.
+**Why:** Keeps HTTP concerns out of the service and avoids an extra SELECT before every update/delete.
