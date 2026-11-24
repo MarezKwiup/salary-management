@@ -47,5 +47,16 @@ describe('POST /employees', () => {
         expect(res.body.error).toBe('INVALID_JSON');
     });
 
-    it('');
+    it('404 on invalid routes', async () => {
+        const res = await request(app).get('/nope');
+        expect(res.status).toBe(404);
+        expect(res.body.error).toBe('NOT_FOUND');
+    });
+
+    it('413 on larger than specified payloads', async () => {
+        const res = await request(app).post('/employees')
+            .send({ ...validBody, fullName: 'a'.repeat(110_000)});
+        expect(res.status).toBe(413);
+        expect(res.body.error).toBe('PAYLOAD_TOO_LARGE');
+    })
 });
