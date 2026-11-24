@@ -8,12 +8,12 @@ const { db } = createDb(env.DATABASE_URL);
 const employeeService = new EmployeeService(new PgEmployeeRepository(db));
 const app = createApp({ employeeService });
 const server = app.listen(env.PORT, () => {
-  console.log(`Server listening on PORT: ${env.PORT}`);
+    console.log(`Server listening on PORT: ${env.PORT}`);
 });
 
 function shutdown(signal: string) {
-  console.log('Shutting down...');
-  server.close(() => process.exit(0));
+    console.log('Shutting down...');
+    server.close(() => process.exit(0));
 }
 
 process.on('SIGTERM', () => shutdown('SIGTERM'));

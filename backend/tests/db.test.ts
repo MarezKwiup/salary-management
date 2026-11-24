@@ -8,20 +8,20 @@ let db: Db;
 let close: () => Promise<void>;
 
 beforeAll(async () => {
-  const t = await setupTestDb();
-  db = t.db;
-  close = t.close;
+    const t = await setupTestDb();
+    db = t.db;
+    close = t.close;
 });
 
 beforeEach(async () => {
-  await resetDb(db);
+    await resetDb(db);
 });
 
 afterAll(async () => {
-  await close?.();
+    await close?.();
 });
 
 test('employees table exists and starts empty', async () => {
-  const res = await db.execute(sql`SELECT count(*)::int AS count from employees`);
-  expect(res.rows[0]?.count).toEqual(0);
+    const res = await db.execute(sql`SELECT count(*)::int AS count from employees`);
+    expect(res.rows[0]?.count).toEqual(0);
 });
