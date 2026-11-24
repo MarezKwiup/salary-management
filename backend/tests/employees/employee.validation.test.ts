@@ -1,5 +1,10 @@
-import { createEmployeeSchema } from '../../src/employees/employee.validation';
+import { file } from 'zod';
+import {
+    createEmployeeSchema,
+    listEmployeesQuerySchema,
+} from '../../src/employees/employee.validation';
 import { describe, it, expect } from 'vitest';
+import { fa } from 'zod/v4/locales';
 
 describe('Create employee schema validation', () => {
     let validEmployee = {
@@ -61,5 +66,36 @@ describe('Create employee schema validation', () => {
         const res = createEmployeeSchema.safeParse(invalidDepartment);
         expect(res.success).toBe(false);
         expect(res.error?.issues[0]?.path).toEqual(['department']);
+    });
+});
+
+describe('listEmployeesQuerySchema', () => {
+    it('applies defaults when the query string is empty', () => {
+        expect(listEmployeesQuerySchema.parse({})).toEqual({
+            page: 1,
+            pageSize: 20,
+            sortBy: 'fullName',
+            sortOrder: 'asc',
+        });
+    });
+
+    it('converts query-string values and normalises country', () => {
+        const result = listEmployeesQuerySchema.parse({ page: '2', pageSize: '50', country: 'in' });
+        expect(result).toMatchObject({ page: 2, pageSize: 50, country: 'IN' });
+    });
+
+    it.each([
+        ['pageSize', '101'],
+        ['pageSize', '0'],
+        ['page', '0'],
+        ['page', '1.5'],
+        ['sortBy', 'password'],
+        ['sortOrder', 'sideways'],
+        ['country', 'XX'],
+        ['department', 'Legal'],
+    ])('rejects %s=%s', (field, value) => {
+        const result = listEmployeesQuerySchema.safeParse({ [field]: value });
+        expect(result.success).toBe(false);
+        expect(result.error?.issues[0]?.path).toEqual([field]);
     });
 });

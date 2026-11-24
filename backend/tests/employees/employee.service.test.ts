@@ -65,5 +65,5 @@ describe('EmployeeService.update', () => {
 describe('missing id', () => {
     it.each(['getById', 'update', 'delete'] as const)('%s throws NotFoundError', async (method) => {
         await expect(service[method](999, { fullName: "Priyanka" })).rejects.toBeInstanceOf(NotFoundError);
-    })
-})
+    });
+});

@@ -38,3 +38,10 @@
 **Accepted:** PATCH with partial validation; currency re-derived when country changes; NotFoundError mapped to 404 in one place; RETURNING used to detect missing rows in one query; updated_at set with now() in the UPDATE.
 **Changed/Rejected:** Considered a Postgres trigger for updated_at; chose an explicit SET in the query for visibility and testability. Hard delete for now; soft delete noted as out of scope.
 **Why:** Keeps HTTP concerns out of the service and avoids an extra SELECT before every update/delete.
+
+## 6. Employee list — search, filters, pagination
+**Tool:** Claude
+**Asked:** Design the list endpoint, explained in SQL first.
+**Accepted:** Offset pagination with a page-size cap; allow-listed sort columns with an id tiebreaker; ILIKE search with escaped wildcards; separate count query run in parallel.
+**Changed/Rejected:** Rejected keyset pagination (the HR table needs page numbers; 10k rows makes offset cheap) and count(*) OVER() (returns no total for an empty page). pg_trgm index noted as the scaling path for name search.
+**Why:** Stable ordering prevents rows appearing on two pages; the allow-list keeps user input out of ORDER BY.

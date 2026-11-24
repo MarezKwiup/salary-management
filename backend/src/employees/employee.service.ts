@@ -1,6 +1,6 @@
 import { currencyFor } from './countries';
-import type { CreateEmployeeInput, UpdateEmployeeInput } from './employee.validation';
-import type { EmployeeChanges, EmployeeRepository, Employee } from './employee.types';
+import type { CreateEmployeeInput, ListEmployeesParams, ListEmployeesQuery, UpdateEmployeeInput } from './employee.validation';
+import type { EmployeeChanges, EmployeeRepository, Employee, Paginated } from './employee.types';
 import { NotFoundError } from '../errors';
 
 export class EmployeeService {
@@ -28,5 +28,22 @@ export class EmployeeService {
     async delete(id: number): Promise<void> {
         const deleted = await this.repo.delete(id);
         if (!deleted) throw new NotFoundError(`Employee ${id} not found`);
+    }
+
+    async list(query: ListEmployeesQuery): Promise<Paginated<Employee>> {
+        const { page, pageSize, ...filters } = query;
+        const params: ListEmployeesParams = {
+            ...filters,
+            limit: pageSize,
+            offset: (page - 1) * pageSize
+        }
+        const { rows, total } = await this.repo.list(params);
+        return {
+            data: rows,
+            page,
+            pageSize,
+            total,
+            totalPages: Math.ceil(total / pageSize)
+        }
     }
 }

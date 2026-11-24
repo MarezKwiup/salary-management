@@ -32,3 +32,21 @@ export type UpdateEmployeeInput = z.infer<typeof updateEmployeeSchema>;
 export const employeeIdSchema = z.object({
     id: z.coerce.number().int().positive(),
 });
+
+export const listEmployeesQuerySchema = z.object({
+    search: z.string().trim().min(1).max(200).optional(),
+    page: z.coerce.number().int().min(1).default(1),
+    pageSize: z.coerce.number().int().min(1).max(100).default(20),
+    sortBy: z.enum(['fullName', 'salary', 'hireDate']).default('fullName'),
+    sortOrder: z.enum(['asc', 'desc']).default('asc'),
+    country: z.string().trim().toUpperCase().pipe(z.enum(COUNTRY_CODES)).optional(),
+    department: z.enum(DEPARTMENTS).optional(),
+    jobTitle: z.string().trim().min(1).max(100).optional()
+});
+
+export type ListEmployeesQuery = z.infer<typeof listEmployeesQuerySchema>;
+
+export type ListEmployeesParams = Omit<ListEmployeesQuery, 'page' | 'pageSize'> & {
+    limit: number;
+    offset: number;
+};

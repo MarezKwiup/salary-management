@@ -6,6 +6,7 @@ import { EmployeeService } from '../../src/employees/employee.service';
 import { InMemoryEmployeeRepository } from '../fakes/InMemoryEmployeeRepository';
 
 let app: Express;
+let employeeService: EmployeeService;
 
 beforeEach(() => {
     const employeeService = new EmployeeService(new InMemoryEmployeeRepository());
@@ -114,10 +115,57 @@ describe('GET /employees/:id', () => {
         expect(res.body.jobTitle).toBe(validBody.jobTitle);
     });
 
-    it('404 for missing id', async () => {
-        const res = await request(app).get(`/employees`);
+    it('404 for an id that does not exist while other employees do', async () => {
+        await createViaApi();
+        const res = await request(app).get('/employees/999');
 
         expect(res.status).toBe(404);
-        expect(JSON.parse(res.text).error).toBe('NOT_FOUND');
+        expect(res.body.error).toBe('NOT_FOUND');
+    });
+});
+
+describe('GET /employees', () => {
+    beforeEach(async () => {
+        const employeeService = new EmployeeService(new InMemoryEmployeeRepository());
+        app = createApp({ employeeService });
+
+        const base = {
+            jobTitle: 'Backend Engineer',
+            department: 'Engineering' as const,
+            salary: 1_000_000,
+            hireDate: '2024-01-01',
+        };
+        await employeeService.create({ ...base, fullName: 'Priya Sharma', country: 'IN' });
+        await employeeService.create({ ...base, fullName: 'Hans Muller', country: 'DE' });
+        await employeeService.create({ ...base, fullName: 'Rahul Verma', country: 'IN' });
+    });
+
+    it('200 with a paginated response and defaults applied', async () => {
+        const res = await request(app).get('/employees');
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({ page: 1, pageSize: 20, total: 3, totalPages: 1 });
+        expect(res.body.data).toHaveLength(3);
+    });
+
+    it('applies filters and paging from the query string', async () => {
+        const res = await request(app).get('/employees').query({ country: 'in', pageSize: 1});
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({ page: 1, pageSize: 1, total: 2, totalPages: 2 });
+        expect(res.body.data.map((e: { fullName: string }) => e.fullName)).toEqual([
+            'Priya Sharma',
+        ]);
+    });
+
+    it('400 for pageSize above the maximum', async () => {
+        const res = await request(app).get('/employees').query({ pageSize: 1000 });
+        expect(res.status).toBe(400);
+        expect(res.body.issues).toEqual(
+            expect.arrayContaining([expect.objectContaining({ path: 'pageSize' })]),
+        );
+    });
+
+    it('400 when a filter is repeated', async () => {
+        const res = await request(app).get('/employees?country=IN&country=DE');
+        expect(res.status).toBe(400);
     });
 });
