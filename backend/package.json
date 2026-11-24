@@ -10,7 +10,8 @@
         "test:watch": "vitest",
         "typecheck": "tsc -p tsconfig.check.json",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "check": "npm run typecheck && npm test"
     },
     "keywords": [],
     "author": "",
