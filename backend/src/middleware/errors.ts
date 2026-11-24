@@ -1,35 +1,35 @@
-import type { ErrorRequestHandler, RequestHandler } from "express";
-import { ZodError } from "zod";
+import type { ErrorRequestHandler, RequestHandler } from 'express';
+import { ZodError } from 'zod';
 
 export const notFound: RequestHandler = (req, res) => {
-    res.status(404).json({
-        error: "NOT_FOUND",
-        message: `No route for ${req.method} ${req.path}`
-    });
-}
+  res.status(404).json({
+    error: 'NOT_FOUND',
+    message: `No route for ${req.method} ${req.path}`,
+  });
+};
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    if (res.headersSent) return next(err);
+  if (res.headersSent) return next(err);
 
-    if (err instanceof ZodError) {
-        res.status(400).json({
-            error: "VALIDATION_ERROR",
-            issues: err.issues.map(i => ({ path: i.path.join('.'), message: i.message }))
-        })
+  if (err instanceof ZodError) {
+    res.status(400).json({
+      error: 'VALIDATION_ERROR',
+      issues: err.issues.map((i) => ({ path: i.path.join('.'), message: i.message })),
+    });
 
-        return;
-    }
+    return;
+  }
 
-    if (err?.type === 'entity.parse.failed') {
-        res.status(400).json({ error: "INVALID_JSON" });
-        return;
-    }
+  if (err?.type === 'entity.parse.failed') {
+    res.status(400).json({ error: 'INVALID_JSON' });
+    return;
+  }
 
-    if (err?.type === "entity.too.large") {
-        res.status(413).json({ error: "PAYLOAD_TOO_LARGE" });
-        return;
-    }
+  if (err?.type === 'entity.too.large') {
+    res.status(413).json({ error: 'PAYLOAD_TOO_LARGE' });
+    return;
+  }
 
-    console.error(`[error] ${req.method} ${req.path} `, err);
-    res.status(500).json({ error: "INTERNAL_ERROR" });
-}
+  console.error(`[error] ${req.method} ${req.path} `, err);
+  res.status(500).json({ error: 'INTERNAL_ERROR' });
+};
