@@ -27,7 +27,7 @@ describe('GET /insights/countries', () => {
             },
         ];
 
-        const res = await request(app).get('/insights/countries');
+        const res = await request(app).get('/api/insights/countries');
 
         expect(res.status).toBe(200);
         expect(res.body).toEqual(repo.overview);
@@ -36,7 +36,7 @@ describe('GET /insights/countries', () => {
 
 describe('GET /insights/countries/:country', () => {
     it('200 with the country detail', async () => {
-        const res = await request(app).get('/insights/countries/in');
+        const res = await request(app).get('/api/insights/countries/in');
 
         expect(res.status).toBe(200);
         expect(res.body).toMatchObject({
@@ -48,7 +48,7 @@ describe('GET /insights/countries/:country', () => {
     });
 
     it('400 for an unsupported country', async () => {
-        const res = await request(app).get('/insights/countries/XX');
+        const res = await request(app).get('/api/insights/countries/XX');
 
         expect(res.status).toBe(400);
         expect(res.body.error).toBe('VALIDATION_ERROR');

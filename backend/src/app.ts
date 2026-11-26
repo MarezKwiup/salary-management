@@ -17,8 +17,8 @@ export function createApp({ employeeService, insightsService }: AppDeps) {
     app.get('/health', (_req, res) => {
         res.json({ status: 'ok' });
     });
-    app.use('/employees', employeeRouter(employeeService));
-    app.use('/insights', insightsRouter(insightsService));
+    app.use('/api/employees', employeeRouter(employeeService));
+    app.use('/api/insights', insightsRouter(insightsService));
     app.use(notFound);
     app.use(errorHandler);
     return app;
