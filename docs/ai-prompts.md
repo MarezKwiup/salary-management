@@ -45,3 +45,10 @@
 **Accepted:** Offset pagination with a page-size cap; allow-listed sort columns with an id tiebreaker; ILIKE search with escaped wildcards; separate count query run in parallel.
 **Changed/Rejected:** Rejected keyset pagination (the HR table needs page numbers; 10k rows makes offset cheap) and count(*) OVER() (returns no total for an empty page). pg_trgm index noted as the scaling path for name search.
 **Why:** Stable ordering prevents rows appearing on two pages; the allow-list keeps user input out of ORDER BY.
+
+## 7. Seed data
+**Tool:** Claude
+**Asked:** Design a seed script for 10,000 realistic employees.
+**Accepted:** Pure, seeded generator separate from the DB script; per-country base pay × role multiplier ± 15%; weighted country/role mix; chunked inserts in a single transaction with TRUNCATE ... RESTART IDENTITY.
+**Changed/Rejected:** A single 10,000-row INSERT fails (70,000 bind parameters > Postgres's 65,535 limit), so rows are inserted in chunks of 1,000. COPY noted as the faster option for much larger loads.
+**Why:** Deterministic data makes demos and tests reproducible; realistic distributions make the insights meaningful.
