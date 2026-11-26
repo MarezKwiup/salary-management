@@ -1,16 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import type { Express } from 'express';
-import { createApp } from '../../src/app';
 import { EmployeeService } from '../../src/employees/employee.service';
-import { InMemoryEmployeeRepository } from '../fakes/InMemoryEmployeeRepository';
+import { buildTestApp } from '../helpers/testApp';
 
 let app: Express;
 let employeeService: EmployeeService;
 
 beforeEach(() => {
-    const employeeService = new EmployeeService(new InMemoryEmployeeRepository());
-    app = createApp({ employeeService });
+    ({ app, employeeService } = buildTestApp());
 });
 
 const validBody = {
@@ -126,9 +124,6 @@ describe('GET /employees/:id', () => {
 
 describe('GET /employees', () => {
     beforeEach(async () => {
-        const employeeService = new EmployeeService(new InMemoryEmployeeRepository());
-        app = createApp({ employeeService });
-
         const base = {
             jobTitle: 'Backend Engineer',
             department: 'Engineering' as const,

@@ -3,12 +3,15 @@ import { env } from './config/env.js';
 import { createDb } from './db/client.js';
 import { PgEmployeeRepository } from './employees/employee.repository.js';
 import { EmployeeService } from './employees/employee.service.js';
+import { PgInsightsRepository } from './insights/insights.repository.js';
+import { InsightsService } from './insights/insights.service.js';
 
 let shuttingDown = false;
 
 const { db, pool } = createDb(env.DATABASE_URL);
 const employeeService = new EmployeeService(new PgEmployeeRepository(db));
-const app = createApp({ employeeService });
+const insightsService = new InsightsService(new PgInsightsRepository(db));
+const app = createApp({ employeeService, insightsService });
 const server = app.listen(env.PORT, () => {
     console.log(`Server listening on PORT: ${env.PORT}`);
 });

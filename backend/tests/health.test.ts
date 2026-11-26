@@ -1,12 +1,7 @@
 import request from 'supertest';
 import { describe, it, expect } from 'vitest';
-import { createApp } from '../src/app';
-import { EmployeeService } from '../src/employees/employee.service';
-import { InMemoryEmployeeRepository } from './fakes/InMemoryEmployeeRepository';
-
-const app = createApp({
-    employeeService: new EmployeeService(new InMemoryEmployeeRepository()),
-});
+import { buildTestApp } from './helpers/testApp';
+const { app } = buildTestApp();
 
 describe('health endpoint', () => {
     it('returns 200 and status ok on health endpoint', async () => {
