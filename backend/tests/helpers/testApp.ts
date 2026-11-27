@@ -10,6 +10,7 @@ export function buildTestApp(overrides: Partial<AppDeps> = {}) {
             overrides.employeeService ?? new EmployeeService(new InMemoryEmployeeRepository()),
         insightsService:
             overrides.insightsService ?? new InsightsService(new StubInsightsRepository()),
+        staticDir: overrides.staticDir,
     };
     return { app: createApp(deps), ...deps };
 }
