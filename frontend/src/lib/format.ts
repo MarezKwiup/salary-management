@@ -19,3 +19,14 @@ export function formatDate(isoDate: string): string {
         timeZone: 'UTC',
     });
 }
+
+export function formatMoneyCompact(amount: number, country: string): string {
+    if (!isCountryCode(country)) return amount.toLocaleString();
+    const { currency } = COUNTRIES[country];
+    return new Intl.NumberFormat('en', {
+        style: 'currency',
+        currency,
+        notation: 'compact',
+        maximumFractionDigits: 1
+    }).format(amount);
+}

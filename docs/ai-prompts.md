@@ -73,3 +73,10 @@
 **Accepted:** One modal for add and edit; Mantine form with light client-side checks; server field errors mapped back onto inputs; confirm dialog for delete; invalidate employees and insights queries after every mutation.
 **Changed/Rejected:** Kept the server as the single source of validation truth rather than duplicating the full Zod schema in the frontend.
 **Why:** Duplicated rules drift apart; mapping server errors keeps one definition of "valid" while still giving instant feedback for obvious mistakes.
+
+## 11. Insights UI
+**Tool:** Claude
+**Asked:** Build the insights overview and per-country pages.
+**Accepted:** Overview table plus headcount chart; country page with stat cards, job-title table and department spend chart; country in the URL.
+**Changed/Rejected:** After reviewing screenshots: replaced local-style "$" for CAD/AUD/SGD with CA$/A$/SGD (bare "$" read as USD in mixed tables); sorted overview by headcount instead of country code.
+**Why:** The mean–median gap surfaces pay skew without extra queries; unambiguous currency symbols matter most exactly where countries are mixed.

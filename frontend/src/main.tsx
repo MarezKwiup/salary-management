@@ -12,6 +12,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { AppLayout } from './layout/AppLayout';
 import { EmployeesPage } from './pages/EmployeesPage.tsx';
 import { InsightsPage } from './pages/InsightsPage.tsx';
+import { CountryInsightsPage } from './pages/CountryInsightsPage.tsx';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
             { index: true, element: <Navigate to="/employees" replace /> },
             { path: 'employees', element: <EmployeesPage /> },
             { path: 'insights', element: <InsightsPage /> },
+            { path: 'insights/:country', element: <CountryInsightsPage /> },
         ],
     },
 ]);
