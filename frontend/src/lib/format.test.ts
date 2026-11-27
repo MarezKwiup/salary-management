@@ -12,7 +12,7 @@ describe('formatMoney', () => {
         ['SG', 93500, 'SGD 93,500'],
     ])('formats %s %d as %s', (country, amount, expected) => {
         // Intl uses a non-breaking space in some formats; normalise for comparison
-        expect(formatMoney(amount, country).replace(/ /g, ' ')).toBe(expected);
+        expect(formatMoney(amount, country).replace(/\u00a0/g, ' ')).toBe(expected);
     });
 
     it('shows a dash for a missing value', () => {
