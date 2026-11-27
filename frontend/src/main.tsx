@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
             { index: true, element: <Navigate to="/employees" replace /> },
-            { path: 'employee', element: <EmployeesPage /> },
+            { path: 'employees', element: <EmployeesPage /> },
             { path: 'insights', element: <InsightsPage/> },
         ],
     },
