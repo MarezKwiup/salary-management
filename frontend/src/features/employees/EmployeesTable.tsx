@@ -1,17 +1,19 @@
-import { Center, Group, Table, Text, Tooltip, UnstyledButton } from '@mantine/core';
-import { IconArrowDown, IconArrowUp, IconSelector } from '@tabler/icons-react';
+import { Center, Group, Table, Text, Tooltip, UnstyledButton, ActionIcon } from '@mantine/core';
+import { IconArrowDown, IconArrowUp, IconSelector, IconPencil, IconTrash } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
-import type { Employee, EmployeeListQuery, SortBy } from '../api/types';
-import { COUNTRIES } from '../lib/countries';
-import { formatDate, formatMoney } from '../lib/format';
+import type { Employee, EmployeeListQuery, SortBy } from '../../api/types';
+import { COUNTRIES } from '../../lib/countries';
+import { formatDate, formatMoney } from '../../lib/format';
 
 interface Props {
     employees: Employee[];
     query: EmployeeListQuery;
     onSort: (sortBy: SortBy) => void;
+    onEdit: (employee: Employee) => void;
+    onDelete: (employee: Employee) => void;
 }
 
-export function EmployeesTable({ employees, query, onSort }: Props) {
+export function EmployeesTable({ employees, query, onSort, onEdit, onDelete }: Props) {
     const canSortBySalary = Boolean(query.country);
 
     return (
@@ -41,6 +43,11 @@ export function EmployeesTable({ employees, query, onSort }: Props) {
                         <SortableHeader column='hireDate' query={query} onSort={onSort}>
                             Hire Date
                         </SortableHeader>
+                        <Table.Th w={90}>
+                            <Text fw={600} size='sm' ta='right'>
+                                Actions
+                            </Text>
+                        </Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -56,6 +63,25 @@ export function EmployeesTable({ employees, query, onSort }: Props) {
                                 {formatMoney(employee.salary, employee.country)}
                             </Table.Td>
                             <Table.Td>{formatDate(employee.hireDate)}</Table.Td>
+                            <Table.Td>
+                                <Group gap={4} justify='flex-end' wrap='nowrap'>
+                                    <ActionIcon
+                                        variant='subtle'
+                                        aria-label={`Edit ${employee.fullName}`}
+                                        onClick={() => onEdit(employee)}
+                                    >
+                                        <IconPencil size={16} />
+                                    </ActionIcon>
+                                    <ActionIcon
+                                        variant='subtle'
+                                        color='red'
+                                        aria-label={`Delete ${employee.fullName}`}
+                                        onClick={() => onDelete(employee)}
+                                    >
+                                        <IconTrash size={16} />
+                                    </ActionIcon>
+                                </Group>
+                            </Table.Td>
                         </Table.Tr>
                     ))}
                 </Table.Tbody>
@@ -96,7 +122,6 @@ function SortableHeader({
                     </Center>
                 )}
             </Group>
-
         </UnstyledButton>
     );
 

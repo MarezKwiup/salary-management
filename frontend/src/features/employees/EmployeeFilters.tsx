@@ -2,14 +2,14 @@ import { Button, Group, Select, TextInput } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { useState } from 'react';
-import type { EmployeeListQuery } from '../api/types';
+import type { EmployeeListQuery } from '../../api/types';
 import { 
     COUNTRIES,
     COUNTRY_CODES,
     DEPARTMENTS,
     type CountryCode,
     type Department
-} from '../lib/countries';
+} from '../../lib/countries';
 
 interface Props {
     query: EmployeeListQuery;

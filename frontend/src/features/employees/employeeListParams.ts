@@ -1,5 +1,5 @@
-import type { EmployeeListQuery, SortBy, SortOrder } from "../api/types";
-import { DEPARTMENTS, isCountryCode, type Department } from "../lib/countries";
+import type { EmployeeListQuery, SortBy, SortOrder } from "../../api/types";
+import { DEPARTMENTS, isCountryCode, type Department } from "../../lib/countries";
 
 const SORT_BY: SortBy[] = ['fullName', 'salary', 'hireDate'];
 export const PAGE_SIZE = 20;

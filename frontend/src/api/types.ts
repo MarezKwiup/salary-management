@@ -33,3 +33,17 @@ export interface EmployeeListQuery {
     page: number;
     pageSize: number;
 }
+
+export interface EmployeeInput {
+    fullName: string;
+    jobTitle: string;
+    department: Department;
+    country: CountryCode;
+    salary: number;
+    hireDate: string;
+}
+
+export interface ValidationErrorBody {
+    error: 'VALIDATION_ERROR',
+    issues: { path: string; message: string }[];
+}

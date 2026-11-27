@@ -1,13 +1,21 @@
-import { Alert, Center, Group, Loader, Pagination, Stack, Text, Title } from "@mantine/core";
+import { Alert, Button, Center, Group, Loader, Pagination, Stack, Text, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { useEmployees } from "../api/employees";
-import type { SortBy } from "../api/types";
-import { EmployeeFilters } from "../features/EmployeeFilters";
-import { EmployeesTable } from "../features/EmployeesTable";
-import { useEmployeeListParams } from "../features/useEmployeeListParams";
+import { useState } from "react";
+import { EmployeeFormModal } from "../features/employees/EmployeeFormModal";
+import { useConfirmDelete } from "../features/employees/useConfirmDelete";
+import type { SortBy, Employee } from "../api/types";
+import { EmployeeFilters } from "../features/employees/EmployeeFilters";
+import { EmployeesTable } from "../features/employees/EmployeesTable";
+import { useEmployeeListParams } from "../features/employees/useEmployeeListParams";
 
 export function EmployeesPage() {
     const { query, update } = useEmployeeListParams();
     const { data, isPending, isError, isFetching } = useEmployees(query);
+    const confirmDelete = useConfirmDelete();
+
+    const [editing, setEditing] = useState<Employee | null | undefined>(undefined);
+
 
     function handleSort(sortBy: SortBy) {
         const sortOrder = query.sortBy === sortBy && query.sortOrder === 'asc' ? 'desc' : 'asc';
@@ -26,12 +34,17 @@ export function EmployeesPage() {
     return (
         <Stack>
             <Group justify="space-between">
-                <Title order={2}>Employees</Title>
-                {data && (
-                    <Text c="dimmed" size="sm">
-                        {data.total.toLocaleString()} {data.total === 1 ? 'employee' : 'employees' }
-                    </Text>
-                )}
+                <div>
+                    <Title order={2}>Employees</Title>
+                    {data && (
+                        <Text c="dimmed" size="sm">
+                            {data.total.toLocaleString()} {data.total === 1 ? 'employee' : 'employees' }
+                        </Text>
+                    )}
+                </div>
+                <Button leftSection={<IconPlus size={16} />} onClick={() => setEditing(null)}>
+                    Add employee
+                </Button>
             </Group>
 
             <EmployeeFilters query={query} onChange={handleFilterChange} />
@@ -57,7 +70,7 @@ export function EmployeesPage() {
             {data && data.data.length > 0 && (
                 <>
                     <div style={{ opacity: isFetching ? 0.6 : 1, transition: 'opacity 150ms' }}>
-                        <EmployeesTable employees={data.data} query={query} onSort={handleSort} />
+                        <EmployeesTable employees={data.data} query={query} onSort={handleSort} onEdit={setEditing} onDelete={confirmDelete}/>
                     </div>
                     <Group justify="center">
                         <Pagination
@@ -68,6 +81,12 @@ export function EmployeesPage() {
                     </Group>
                 </>
             )}
+
+            <EmployeeFormModal
+                opened={editing !== undefined}
+                onClose={() => setEditing(undefined)}
+                employee={editing ?? undefined}
+            />
         </Stack>
     );
 }

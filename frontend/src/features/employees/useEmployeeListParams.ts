@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router";
-import type { EmployeeListQuery } from "../api/types";
+import type { EmployeeListQuery } from "../../api/types";
 import { parseListParams } from "./employeeListParams";
 
 type Changes = Partial<Omit<EmployeeListQuery, 'pageSize'>>;

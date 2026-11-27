@@ -66,3 +66,10 @@
 **Accepted:** URL query params as the single source of list state; debounced search; keepPreviousData to avoid flicker; Intl.NumberFormat with per-country locale.
 **Changed/Rejected:** Disabled salary sorting unless a country is selected — sorting mixed currencies would be misleading. Reset to page 1 on any filter change.
 **Why:** Shareable, bookmarkable views fit how HR works; the currency rule matches the backend's "never mix currencies" design.
+
+## 10. Add / edit / delete UI
+**Tool:** Claude
+**Asked:** Build create/edit/delete flows on the employees page.
+**Accepted:** One modal for add and edit; Mantine form with light client-side checks; server field errors mapped back onto inputs; confirm dialog for delete; invalidate employees and insights queries after every mutation.
+**Changed/Rejected:** Kept the server as the single source of validation truth rather than duplicating the full Zod schema in the frontend.
+**Why:** Duplicated rules drift apart; mapping server errors keeps one definition of "valid" while still giving instant feedback for obvious mistakes.
