@@ -1,7 +1,7 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { notifications } from "@mantine/notifications";
-import { fieldErrorsForm } from "../../api/errors";
+import { fieldErrorsFrom } from "../../api/errors";
 import { useCreateEmployee, useUpdateEmployee } from "../../api/employees";
 import type { Employee } from "../../api/types";
 import { COUNTRIES, COUNTRY_CODES, DEPARTMENTS } from "../../lib/countries";
@@ -68,7 +68,7 @@ function EmployeeForm({
             });
             onDone();
         } catch (error) {
-            const fieldErrors = fieldErrorsForm(error);
+            const fieldErrors = fieldErrorsFrom(error);
             if (fieldErrors) {
                 form.setErrors(fieldErrors);
             } else {

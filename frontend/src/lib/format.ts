@@ -27,6 +27,7 @@ export function formatMoneyCompact(amount: number, country: string): string {
         style: 'currency',
         currency,
         notation: 'compact',
-        maximumFractionDigits: 1
+        maximumFractionDigits: 1,
+        minimumFractionDigits: 0
     }).format(amount);
 }

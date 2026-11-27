@@ -27,5 +27,6 @@ export const DEPARTMENTS = [
 export type Department = (typeof DEPARTMENTS)[number];
 
 export function isCountryCode(value: string): value is CountryCode {
-    return value in COUNTRIES;
+    // hasOwn, not `in`: `'toString' in COUNTRIES` is true because of the object prototype
+    return Object.hasOwn(COUNTRIES, value);
 }

@@ -80,3 +80,11 @@
 **Accepted:** Overview table plus headcount chart; country page with stat cards, job-title table and department spend chart; country in the URL.
 **Changed/Rejected:** After reviewing screenshots: replaced local-style "$" for CAD/AUD/SGD with CA$/A$/SGD (bare "$" read as USD in mixed tables); sorted overview by headcount instead of country code.
 **Why:** The mean–median gap surfaces pay skew without extra queries; unambiguous currency symbols matter most exactly where countries are mixed.
+
+## 12. Frontend testing
+**Tool:** Claude
+**Asked:** Add meaningful frontend tests.
+**Accepted:** Unit tests on pure functions (no jsdom), Playwright e2e for real user flows against the full stack, unique test data cleaned up via the API.
+**Changed/Rejected:** Skipped jsdom component tests — they'd mostly re-test Mantine; e2e covers the same behaviour more realistically.
+**Found by the tests:** isCountryCode accepted "toString" (`in` checks the prototype → fixed with Object.hasOwn); compact currency labels rendered "$800.0K" in some environments; a misnamed helper.
+**Why:** Fast unit tests for logic plus a few high-value e2e flows give confidence without brittle UI tests.

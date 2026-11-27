@@ -4,7 +4,7 @@ export function averageVsMedian(average: number | null, median: number | null): 
 }
 
 export function formatGap(gap: number | null): string {
-    if (gap === null) return '-';
+    if (gap === null) return '—';
     if (gap === 0) return 'Same';
     return `${gap > 0 ? '+' : ''}${gap}%`;
 }
