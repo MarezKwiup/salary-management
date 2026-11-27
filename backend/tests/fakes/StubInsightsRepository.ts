@@ -3,7 +3,7 @@ import type {
     DepartmentStats,
     InsightsRepository,
     JobTitleStats,
-    SalaryStats
+    SalaryStats,
 } from '../../src/insights/insights.types';
 
 export class StubInsightsRepository implements InsightsRepository {

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { escapeLike } from "../src/db/escapeLike";
+import { describe, it, expect } from 'vitest';
+import { escapeLike } from '../src/db/escapeLike';
 
 describe('escapeLike', () => {
     it.each([
@@ -9,8 +9,8 @@ describe('escapeLike', () => {
     ])('escapes %s as %s', (input, expected) => {
         expect(escapeLike(input)).toBe(expected);
     });
- 
+
     it('leaves ordinary text unchanged', () => {
         expect(escapeLike('Priya Sharma')).toBe('Priya Sharma');
     });
-})
+});

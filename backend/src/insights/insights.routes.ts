@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { countryParamSchema } from "./insights.validation";
-import type { InsightsService } from "./insights.service";
+import { Router } from 'express';
+import { countryParamSchema } from './insights.validation';
+import type { InsightsService } from './insights.service';
 
 export function insightsRouter(service: InsightsService): Router {
     const router = Router();

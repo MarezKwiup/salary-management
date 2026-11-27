@@ -1,4 +1,4 @@
-import { CountryCode } from "../employees/countries";
+import { CountryCode } from '../employees/countries';
 
 export interface SalaryStats {
     headcount: number;

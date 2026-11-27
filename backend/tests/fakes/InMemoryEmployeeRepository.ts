@@ -1,4 +1,9 @@
-import type { Employee, EmployeeChanges, EmployeeRepository, NewEmployee } from '../../src/employees/employee.types';
+import type {
+    Employee,
+    EmployeeChanges,
+    EmployeeRepository,
+    NewEmployee,
+} from '../../src/employees/employee.types';
 import { ListEmployeesParams } from '../../src/employees/employee.validation';
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
@@ -35,14 +40,14 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
         return true;
     }
 
-    async list(params: ListEmployeesParams): Promise<{rows: Employee[]; total: number }> {
+    async list(params: ListEmployeesParams): Promise<{ rows: Employee[]; total: number }> {
         const search = params.search?.toLowerCase();
         const matches = this.rows.filter(
             (row) =>
-            (!search || row.fullName.toLowerCase().includes(search)) &&
-            (!params.country || row.country === params.country) &&
-            (!params.department || row.department === params.department) &&
-            (!params.jobTitle || row.jobTitle === params.jobTitle),
+                (!search || row.fullName.toLowerCase().includes(search)) &&
+                (!params.country || row.country === params.country) &&
+                (!params.department || row.department === params.department) &&
+                (!params.jobTitle || row.jobTitle === params.jobTitle),
         );
 
         const direction = params.sortOrder === 'desc' ? -1 : 1;

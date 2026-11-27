@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from 'vitest';
 import { InsightsService } from '../../src/insights/insights.service';
 import { StubInsightsRepository } from '../fakes/StubInsightsRepository';
 
@@ -26,8 +26,8 @@ describe('InsightsService.getCountryDetail', () => {
                 minSalary: 100,
                 maxSalary: 300,
                 avgSalary: 200,
-                medianSalary: 200
-            }
+                medianSalary: 200,
+            },
         ];
         repo.departmentStats = [
             { department: 'Engineering', headcount: 2, totalSalary: 400, avgSalary: 200 },
@@ -75,7 +75,7 @@ describe('InsightsService.countryOverview', () => {
                 minSalary: 100,
                 maxSalary: 100,
                 avgSalary: 100,
-                medianSalary: 100
+                medianSalary: 100,
             },
         ];
 

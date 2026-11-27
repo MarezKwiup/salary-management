@@ -1,4 +1,4 @@
-import type { CountryCode } from "../employees/countries";
+import type { CountryCode } from '../employees/countries';
 import type { DEPARTMENTS } from '../employees/employee.validation';
 
 type Department = (typeof DEPARTMENTS)[number];
@@ -16,7 +16,7 @@ export const BASE_SALARY: Record<CountryCode, number> = {
 
 /** Share of the workforce in each country (weights, not percentages; they need not sum to 100). */
 export const COUNTRY_WEIGHTS: { value: CountryCode; weight: number }[] = [
-     { value: 'IN', weight: 35 },
+    { value: 'IN', weight: 35 },
     { value: 'US', weight: 25 },
     { value: 'GB', weight: 10 },
     { value: 'DE', weight: 10 },

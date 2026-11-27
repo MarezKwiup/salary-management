@@ -1,5 +1,10 @@
 import { currencyFor } from './countries';
-import type { CreateEmployeeInput, ListEmployeesParams, ListEmployeesQuery, UpdateEmployeeInput } from './employee.validation';
+import type {
+    CreateEmployeeInput,
+    ListEmployeesParams,
+    ListEmployeesQuery,
+    UpdateEmployeeInput,
+} from './employee.validation';
 import type { EmployeeChanges, EmployeeRepository, Employee, Paginated } from './employee.types';
 import { NotFoundError } from '../errors';
 
@@ -19,7 +24,7 @@ export class EmployeeService {
     async update(id: number, input: UpdateEmployeeInput): Promise<Employee> {
         const changes: EmployeeChanges = input.country
             ? { ...input, currency: currencyFor(input.country) }
-            : input
+            : input;
         const employee = await this.repo.update(id, changes);
         if (!employee) throw new NotFoundError(`Employee ${id} not found`);
         return employee;
@@ -35,15 +40,15 @@ export class EmployeeService {
         const params: ListEmployeesParams = {
             ...filters,
             limit: pageSize,
-            offset: (page - 1) * pageSize
-        }
+            offset: (page - 1) * pageSize,
+        };
         const { rows, total } = await this.repo.list(params);
         return {
             data: rows,
             page,
             pageSize,
             total,
-            totalPages: Math.ceil(total / pageSize)
-        }
+            totalPages: Math.ceil(total / pageSize),
+        };
     }
 }

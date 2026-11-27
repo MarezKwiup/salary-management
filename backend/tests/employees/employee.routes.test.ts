@@ -53,11 +53,12 @@ describe('POST /employees', () => {
     });
 
     it('413 on larger than specified payloads', async () => {
-        const res = await request(app).post('/api/employees')
-            .send({ ...validBody, fullName: 'a'.repeat(110_000)});
+        const res = await request(app)
+            .post('/api/employees')
+            .send({ ...validBody, fullName: 'a'.repeat(110_000) });
         expect(res.status).toBe(413);
         expect(res.body.error).toBe('PAYLOAD_TOO_LARGE');
-    })
+    });
 });
 
 async function createViaApi() {
@@ -72,14 +73,14 @@ describe('DELETE /employees/:id', () => {
 
         expect(res.status).toBe(204);
         expect(res.text).toBe('');
-    })
+    });
 
     it('404 for missing id', async () => {
         const res = await request(app).delete(`/api/employees`);
 
         expect(res.status).toBe(404);
         expect(JSON.parse(res.text).error).toBe('NOT_FOUND');
-    })
+    });
 });
 
 describe('PATCH /employees/:id', () => {
@@ -143,7 +144,7 @@ describe('GET /employees', () => {
     });
 
     it('applies filters and paging from the query string', async () => {
-        const res = await request(app).get('/api/employees').query({ country: 'in', pageSize: 1});
+        const res = await request(app).get('/api/employees').query({ country: 'in', pageSize: 1 });
         expect(res.status).toBe(200);
         expect(res.body).toMatchObject({ page: 1, pageSize: 1, total: 2, totalPages: 2 });
         expect(res.body.data.map((e: { fullName: string }) => e.fullName)).toEqual([

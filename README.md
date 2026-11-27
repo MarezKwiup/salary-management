@@ -4,8 +4,6 @@ A web app for an HR manager to manage salary data for about 10,000 employees acr
 
 **Live demo:** https://salary-management-pr23.onrender.com/. It runs on Render's free tier, so the first load after a period of inactivity can take up to a minute.
 
-![Employees page](docs/screenshots/employees.png)
-
 ---
 
 ## What it does
@@ -18,10 +16,6 @@ A web app for an HR manager to manage salary data for about 10,000 employees acr
 **Salary insights**
 - Every country at a glance: headcount, median, average, lowest and highest salary, and the gap between average and median
 - A page per country: pay by job title and salary spend by department
-
-| Insights overview | Country breakdown |
-|---|---|
-| ![Insights overview](docs/screenshots/insights-overview.png) | ![Country breakdown](docs/screenshots/insights-country.png) |
 
 ## Key product decisions
 

@@ -1,5 +1,5 @@
-import { COUNTRIES, CountryCode } from "../employees/countries";
-import { CountryDetail, CountryOverview, InsightsRepository } from "./insights.types";
+import { COUNTRIES, CountryCode } from '../employees/countries';
+import { CountryDetail, CountryOverview, InsightsRepository } from './insights.types';
 
 export class InsightsService {
     constructor(private readonly repo: InsightsRepository) {}
@@ -13,7 +13,7 @@ export class InsightsService {
         const [summary, jobTitles, departments] = await Promise.all([
             this.repo.countrySummary(country),
             this.repo.jobTitles(country),
-            this.repo.departments(country)
+            this.repo.departments(country),
         ]);
         return { country, countryName, currency, summary, jobTitles, departments };
     }

@@ -8,7 +8,9 @@ const salaryStats = {
     minSalary: min(employees.salary),
     maxSalary: max(employees.salary),
     avgSalary: sql<number | null>`round(avg(${employees.salary}))`.mapWith(Number),
-    medianSalary: sql<number | null>`round(percentile_cont(0.5) within group (order by ${employees.salary}))`.mapWith(Number),
+    medianSalary: sql<
+        number | null
+    >`round(percentile_cont(0.5) within group (order by ${employees.salary}))`.mapWith(Number),
 };
 
 export class PgInsightsRepository implements InsightsRepository {
@@ -23,7 +25,10 @@ export class PgInsightsRepository implements InsightsRepository {
     }
 
     async countrySummary(country: string) {
-        const [row] = await this.db.select(salaryStats).from(employees).where(eq(employees.country, country));
+        const [row] = await this.db
+            .select(salaryStats)
+            .from(employees)
+            .where(eq(employees.country, country));
         return row!;
     }
 

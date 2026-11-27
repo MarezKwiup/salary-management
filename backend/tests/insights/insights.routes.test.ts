@@ -23,7 +23,7 @@ describe('GET /insights/countries', () => {
                 minSalary: 100,
                 maxSalary: 300,
                 avgSalary: 200,
-                medianSalary: 200
+                medianSalary: 200,
             },
         ];
 
@@ -42,7 +42,7 @@ describe('GET /insights/countries/:country', () => {
         expect(res.body).toMatchObject({
             country: 'IN',
             countryName: 'India',
-            currency: 'INR'
+            currency: 'INR',
         });
         expect(repo.calls).toContain('countrySummary:IN');
     });

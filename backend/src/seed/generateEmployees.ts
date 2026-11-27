@@ -17,7 +17,7 @@ const NAME_LOCALES = {
 const ROLE_CHOICES = ROLES.map((role) => ({ value: role, weight: role.weight }));
 
 export function generateEmployees(count: number, seed = 42): NewEmployee[] {
-    const random = new Faker({ locale: [en, base ]});
+    const random = new Faker({ locale: [en, base] });
     random.seed(seed);
 
     const namesByCountry = Object.fromEntries(
@@ -33,9 +33,9 @@ export function generateEmployees(count: number, seed = 42): NewEmployee[] {
         const role = random.helpers.weightedArrayElement(ROLE_CHOICES);
         const variation = random.number.float({
             min: 1 - SALARY_VARIATION,
-            max: 1 + SALARY_VARIATION
+            max: 1 + SALARY_VARIATION,
         });
-        const salary = 
+        const salary =
             Math.round((BASE_SALARY[country] * role.multiplier * variation) / 1000) * 1000;
         const hireDate = random.date.between(HIRE_DATE_RANGE).toISOString().slice(0, 10);
 
@@ -47,7 +47,7 @@ export function generateEmployees(count: number, seed = 42): NewEmployee[] {
             country,
             currency: currencyFor(country),
             salary,
-            hireDate
+            hireDate,
         };
     });
 }

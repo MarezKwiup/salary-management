@@ -9,7 +9,7 @@ export interface EmployeeRepository {
     findById(id: number): Promise<Employee | null>;
     update(id: number, changes: EmployeeChanges): Promise<Employee | null>;
     delete(id: number): Promise<boolean>;
-    list(params: ListEmployeesParams): Promise<{rows: Employee[]; total: number}>;
+    list(params: ListEmployeesParams): Promise<{ rows: Employee[]; total: number }>;
 }
 
 export type EmployeeChanges = UpdateEmployeeInput & { currency?: string };

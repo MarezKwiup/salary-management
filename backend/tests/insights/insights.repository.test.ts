@@ -59,7 +59,7 @@ describe('PgInsightsRepository.countryOverview', () => {
                 minSalary: 5000,
                 maxSalary: 5000,
                 avgSalary: 5000,
-                medianSalary: 5000
+                medianSalary: 5000,
             },
             {
                 country: 'IN',
@@ -68,8 +68,8 @@ describe('PgInsightsRepository.countryOverview', () => {
                 minSalary: 100,
                 maxSalary: 300,
                 avgSalary: 200,
-                medianSalary: 200
-            }
+                medianSalary: 200,
+            },
         ]);
     });
 
@@ -80,28 +80,24 @@ describe('PgInsightsRepository.countryOverview', () => {
 
 describe('PgInsightsRepository.countrySummary', () => {
     it('shows how an outlier pulls average but not median', async () => {
-        await (seed(
+        await seed(
             { ...india, salary: 100 },
             { ...india, salary: 200 },
             { ...india, salary: 300 },
             { ...india, salary: 1000 },
-        ));
+        );
 
         expect(await insights.countrySummary('IN')).toEqual({
             headcount: 4,
             minSalary: 100,
             maxSalary: 1000,
             avgSalary: 400,
-            medianSalary: 250
+            medianSalary: 250,
         });
     });
 
     it('uses the middle value for an odd count', async () => {
-        await seed(
-            { ...india, salary: 100 },
-            { ...india, salary: 200 },
-            { ...india, salary: 900 },
-        );
+        await seed({ ...india, salary: 100 }, { ...india, salary: 200 }, { ...india, salary: 900 });
 
         const summary = await insights.countrySummary('IN');
 
@@ -109,21 +105,15 @@ describe('PgInsightsRepository.countrySummary', () => {
     });
 
     it('rounds average to whole number', async () => {
-        await seed(
-            { ...india, salary: 100 },
-            { ...india, salary: 101 },
-        );
+        await seed({ ...india, salary: 100 }, { ...india, salary: 101 });
 
         const summary = await insights.countrySummary('IN');
-        
+
         expect(summary.avgSalary).toBe(101);
     });
 
     it('only includes requested country', async () => {
-        await seed(
-            { ...india, salary: 100 },
-            { ...germany, salary: 9999 },
-        );
+        await seed({ ...india, salary: 100 }, { ...germany, salary: 9999 });
 
         const summary = await insights.countrySummary('IN');
 
@@ -138,7 +128,7 @@ describe('PgInsightsRepository.countrySummary', () => {
             minSalary: null,
             maxSalary: null,
             avgSalary: null,
-            medianSalary: null
+            medianSalary: null,
         });
     });
 });
@@ -149,7 +139,7 @@ describe('PgInsightsRepository.jobTitles', () => {
             { ...india, jobTitle: 'Backend Engineer', salary: 100 },
             { ...india, jobTitle: 'Backend Engineer', salary: 300 },
             { ...india, jobTitle: 'Engineering Manager', salary: 900 },
-            { ...germany, jobTitle: 'Backend Engineer', salary: 5000 }
+            { ...germany, jobTitle: 'Backend Engineer', salary: 5000 },
         );
 
         const jobTitles = await insights.jobTitles('IN');
@@ -161,7 +151,7 @@ describe('PgInsightsRepository.jobTitles', () => {
                 minSalary: 900,
                 maxSalary: 900,
                 avgSalary: 900,
-                medianSalary: 900
+                medianSalary: 900,
             },
             {
                 jobTitle: 'Backend Engineer',
@@ -169,8 +159,8 @@ describe('PgInsightsRepository.jobTitles', () => {
                 minSalary: 100,
                 maxSalary: 300,
                 avgSalary: 200,
-                medianSalary: 200
-            }
+                medianSalary: 200,
+            },
         ]);
     });
 
@@ -196,9 +186,9 @@ describe('PgInsightsRepository.departments', () => {
 
     it('returns total above the integer limit correctly as numbers', async () => {
         await seed({ ...india, salary: 2_000_000_000 }, { ...india, salary: 2_000_000_000 });
- 
+
         const [engineering] = await insights.departments('IN');
- 
+
         expect(engineering?.totalSalary).toBe(4_000_000_000);
         expect(typeof engineering?.totalSalary).toBe('number');
     });

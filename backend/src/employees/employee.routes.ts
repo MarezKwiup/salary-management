@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { createEmployeeSchema, employeeIdSchema, listEmployeesQuerySchema, updateEmployeeSchema } from './employee.validation';
+import {
+    createEmployeeSchema,
+    employeeIdSchema,
+    listEmployeesQuerySchema,
+    updateEmployeeSchema,
+} from './employee.validation';
 import type { EmployeeService } from './employee.service';
 
 export function employeeRouter(service: EmployeeService): Router {

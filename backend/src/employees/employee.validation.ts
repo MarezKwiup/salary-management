@@ -41,7 +41,7 @@ export const listEmployeesQuerySchema = z.object({
     sortOrder: z.enum(['asc', 'desc']).default('asc'),
     country: z.string().trim().toUpperCase().pipe(z.enum(COUNTRY_CODES)).optional(),
     department: z.enum(DEPARTMENTS).optional(),
-    jobTitle: z.string().trim().min(1).max(100).optional()
+    jobTitle: z.string().trim().min(1).max(100).optional(),
 });
 
 export type ListEmployeesQuery = z.infer<typeof listEmployeesQuerySchema>;

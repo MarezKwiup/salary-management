@@ -39,14 +39,14 @@ describe('EmployeeService.create', () => {
     });
 });
 
-async function seed(country: CountryCode = "IN") {
+async function seed(country: CountryCode = 'IN') {
     return service.create({ ...validInput, country });
 }
 
 describe('EmployeeService.update', () => {
     it('re-derives currency when country changes', async () => {
         const emp = await seed('IN');
-        const updated = await service.update(emp.id, { country: 'DE'});
+        const updated = await service.update(emp.id, { country: 'DE' });
 
         expect(updated.country).toBe('DE');
         expect(updated.currency).toBe('EUR');
@@ -64,6 +64,8 @@ describe('EmployeeService.update', () => {
 
 describe('missing id', () => {
     it.each(['getById', 'update', 'delete'] as const)('%s throws NotFoundError', async (method) => {
-        await expect(service[method](999, { fullName: "Priyanka" })).rejects.toBeInstanceOf(NotFoundError);
+        await expect(service[method](999, { fullName: 'Priyanka' })).rejects.toBeInstanceOf(
+            NotFoundError,
+        );
     });
 });

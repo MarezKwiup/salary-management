@@ -78,13 +78,13 @@ describe('PgEmployeeRepository.findById', () => {
         expect(emp?.jobTitle).toBe(created.jobTitle);
         expect(emp?.fullName).toBe(created.fullName);
         expect(emp?.salary).toBe(created.salary);
-    })
+    });
 
     it('returns null on id not found', async () => {
         const emp = await repo.findById(999);
         expect(emp).toBeNull();
-    })
-})
+    });
+});
 
 describe('PgEmployeeRepository.delete', () => {
     it('successfully deletes existing employees', async () => {
@@ -100,7 +100,6 @@ describe('PgEmployeeRepository.delete', () => {
     });
 });
 
- 
 const base: NewEmployee = {
     fullName: 'Placeholder',
     jobTitle: 'Backend Engineer',
@@ -158,7 +157,7 @@ describe('PgEmployeeRepository.list - filters', () => {
         const { rows, total } = await repo.list({
             ...defaults,
             country: 'DE',
-            department: 'Sales'
+            department: 'Sales',
         });
         expect(names(rows)).toEqual(['Dieter Germany Sales']);
         expect(total).toBe(1);
@@ -237,4 +236,4 @@ describe('PgEmployeeRepository.list - pagination', () => {
         const { total } = await repo.list(defaults);
         expect(typeof total).toBe('number');
     });
-})
+});
